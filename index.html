@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Lowe's | Home Improvement Chat Demo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Helvetica Neue', Arial, sans-serif;
+      background: #f6f7fa;
+      color: #283044;
+    }
+    header {
+      background: #004792;
+      padding: 18px 0;
+      color: #fff;
+      text-align: center;
+    }
+    header img {
+      vertical-align: middle;
+      height: 40px;
+      margin-right: 12px;
+    }
+    nav {
+      background: #02386e;
+      color: #fff;
+      padding: 13px 0;
+      text-align: center;
+    }
+    nav a {
+      color: #fff;
+      text-decoration: none;
+      margin: 0 22px;
+      font-size: 16px;
+      font-weight: 500;
+    }
+    .banner {
+      background: #d9e7f4;
+      padding: 28px 0;
+      text-align: center;
+      font-size: 1.4em;
+      color: #005cde;
+      font-weight: 700;
+      margin-bottom: 30px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.04);
+    }
+    .main {
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      gap: 32px;
+      margin: 0 5vw;
+      padding-bottom: 52px;
+    }
+    .featured {
+      background: #fff;
+      border-radius: 7px;
+      box-shadow: 0 2px 16px #e3e3e3;
+      padding: 24px 26px;
+      min-width: 340px;
+      max-width: 400px;
+      margin-bottom: 32px;
+    }
+    .featured h2 {
+      color: #005cde;
+      margin-bottom: 16px;
+      font-size: 1.2em;
+      font-weight: 700;
+    }
+    .featured p {
+      line-height: 1.6;
+      font-size: 15px;
+      margin-bottom: 16px;
+    }
+    .featured img {
+      width: 100%;
+      border-radius: 6px;
+      margin-bottom: 13px;
+    }
+    footer {
+      background: #e6e9ef;
+      color: #8899aa;
+      text-align: center;
+      padding: 18px 0;
+      font-size: 14px;
+    }
+    /* Chatbot button area: center right */
+    #divicw {
+      position: fixed;
+      right: 48px;
+      bottom: 12px;
+      z-index: 10000;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <!-- Lowe's logo simulated (GitHub pages do not allow direct copying Lowe's logo) -->
+    <img src="https://upload.wikimedia.org/wikipedia/commons/4/4e/Lowes_logo_2022.png" alt="Lowe's Logo">
+    <span style="font-size: 1.5em; font-weight:700;">Lowe's</span>
+  </header>
+  <nav>
+    <a href="#">Shop</a>
+    <a href="#">Departments</a>
+    <a href="#">DIY</a>
+    <a href="#">Trends</a>
+    <a href="#">Deals</a>
+    <a href="#">Services</a>
+  </nav>
+  <div class="banner">
+    Celebrate Fall Savings: Exclusive Deals on Home and Garden
+  </div>
+  <div class="main">
+    <div class="featured">
+      <img src="https://images.lowes.com/product/converted/885911/885911850529.jpg" alt="Featured Product">
+      <h2>DeWalt Drill Driver Kit</h2>
+      <p>Power through your fall DIY projects with our bestselling DeWalt Drill Driver Kit. Save big during our Labor Day Sale!</p>
+      <p><strong>Now just $79 (regular $99)</strong></p>
+      <button style="background:#005cde;color:#fff;border:none;padding:10px 22px;border-radius:4px;cursor:pointer;font-weight:600;">Shop Now</button>
+    </div>
+    <div class="featured">
+      <img src="https://images.lowes.com/product/converted/889144/889144399086.jpg" alt="Featured Product">
+      <h2>Char-Broil 4 Burner Gas Grill</h2>
+      <p>Make the most of your outdoor cooking with our Labor Day Sale specials on grills, smokers and accessories.</p>
+      <p><strong>Just $199 (was $249)</strong></p>
+      <button style="background:#005cde;color:#fff;border:none;padding:10px 22px;border-radius:4px;cursor:pointer;font-weight:600;">Shop Now</button>
+    </div>
+  </div>
+
+  <!-- Chatbot button area -->
+  <div id="divicw" data-bind="5FC192F8-E565-4F20-8E92-DB53AE8C5833" data-org=""></div>
+  <script>
+  var i={t:function(t){var e="https://media.imi.chat/widget/js/imichatinit.js";
+  try{var o=new XMLHttpRequest;
+  o.onreadystatechange=function(){if(this.readyState==4){
+    var t=document.getElementById("divicw");
+    if(this.status==0){i.o(t);return}
+    var e=document.createElement("script");
+    e.innerHTML=this.responseText;
+    t.parentNode.insertBefore(e,t.nextSibling)}};
+  o.open("GET",e,true);o.send()}catch(s){console.error(s)}},
+  o:function(t){t.insertAdjacentHTML("afterend",'<iframe id="tls_al_frm" frameborder="0" style="overflow: hidden;height: 208px;width: 394px;position: fixed;display: block;right: 48px;bottom: 12px;z-index: 99999; display:none;"></iframe>');
+  var e=document.getElementById("tls_al_frm");
+  var o=e.contentWindow||(e.contentDocument.document||e.contentDocument);
+  o.document.open();
+  o.document.write('<!doctype html><html><head><meta charset="utf-8"><title>Untitled Document</title><style>body{font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;color: #99a0b0;font-size: 14px;}.popover__content{background-color: #fbfbfe; padding: 1.5rem; border-radius: 5px; width: 300px; box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.26);position: relative;}.popover__message{font-weight: 600;color:#56627c;font-size: 16px;}.pull-left{float:left;}.clearfix{clear: both;}.hdr-txt{width: 218px; margin-top: 3px;}.para-txt a{text-decoration: none;color: #005cde;}.close-btn{position: absolute;right:15px;top:15px;}.close-btn a{text-decoration: none;font-weight: 400; color: #56627c; font-size: 16px;}</style></head><body><div class="popover__content"><div class="close-btn"><a href="#" onclick="closeTLSAlert();">X</a></div><div class="popover__message"><div class="pull-left hdr-txt">This browser version is not supported on LiveChat.</div></div><div class="clearfix"></div><p class="para-txt">Please update your browser to the latest version and re-open the website to access the widget. </p></div><script>function closeTLSAlert(){window.parent.postMessage({key: "close_tls_alert",value: "close_tls_alert",action: "close_tls_alert"}, "*");}<\/script></body></html>');
+  o.document.close();e.style.display="block";
+  window.addEventListener("message",function(t){if(t.data.action=="close_tls_alert"){i.s()}})},
+  s:function(){var t=document.getElementById("tls_al_frm");t.remove()}};
+  i.t(function(t){});
+  </script>
+
+  <footer>
+    &copy; 2025 Lowe's Demo
+  </footer>
+</body>
+</html>
