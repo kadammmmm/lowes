@@ -1,158 +1,358 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Lowe's | Home Improvement Chat Demo</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Home Improvement Demo Store — Not Affiliated</title>
+  <meta name="description" content="Mock home improvement storefront for chatbot demo. Not affiliated with any brand." />
+  <meta name="robots" content="noindex, nofollow" />
   <style>
-    body {
-      margin: 0;
-      font-family: 'Helvetica Neue', Arial, sans-serif;
-      background: #f6f7fa;
-      color: #283044;
+    :root{
+      --blue-900:#1e3a8a; /* deep blue header */
+      --blue-800:#1f4db5; /* brand-like but generic */
+      --blue-700:#2b6cb0;
+      --gray-900:#0f172a;
+      --gray-700:#334155;
+      --gray-600:#475569;
+      --gray-500:#64748b;
+      --gray-300:#cbd5e1;
+      --gray-200:#e2e8f0;
+      --gray-100:#f1f5f9;
+      --accent:#f59e0b;
+      --success:#10b981;
+      --danger:#ef4444;
+      --radius-xl:16px;
+      --radius-lg:12px;
+      --radius-md:10px;
+      --shadow:0 8px 30px rgba(0,0,0,.08);
     }
-    header {
-      background: #004792;
-      padding: 18px 0;
-      color: #fff;
-      text-align: center;
+    *{box-sizing:border-box}
+    html,body{margin:0;padding:0;font-family: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, Noto Sans, "Apple Color Emoji", "Segoe UI Emoji";color:var(--gray-900);background:#fff}
+    a{color:var(--blue-800);text-decoration:none}
+    a:hover{text-decoration:underline}
+    .container{max-width:1200px;margin:0 auto;padding:0 16px}
+    .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+
+    /* Top announcement bar */
+    .topbar{background:var(--blue-900);color:#fff;font-size:.9rem}
+    .topbar .container{display:flex;gap:12px;align-items:center;justify-content:space-between;padding:10px 16px}
+    .topbar .left, .topbar .right{display:flex;gap:16px;align-items:center}
+    .pill{background:rgba(255,255,255,.12);padding:6px 10px;border-radius:9999px}
+
+    /* Header */
+    header.header{background:#fff;box-shadow:var(--shadow);position:sticky;top:0;z-index:1000}
+    .header .row{display:grid;grid-template-columns:180px 1fr 320px;gap:16px;align-items:center;padding:14px 0}
+    .brand{display:flex;align-items:center;gap:10px}
+    .brand .mark{width:44px;height:44px;border-radius:10px;background:linear-gradient(135deg,var(--blue-900),var(--blue-700));display:grid;place-items:center;color:#fff;font-weight:800}
+    .brand .name{font-weight:800;letter-spacing:.4px}
+    .search{display:flex;align-items:center}
+    .search input{width:100%;padding:12px 14px;border:1px solid var(--gray-200);border-right:0;border-radius:12px 0 0 12px;font-size:1rem;background:#fff}
+    .search button{padding:12px 16px;border:1px solid var(--gray-200);border-left:0;border-radius:0 12px 12px 0;background:var(--blue-800);color:#fff;cursor:pointer}
+    .quick{display:flex;gap:18px;justify-content:flex-end;align-items:center}
+    .quick a{display:flex;gap:8px;align-items:center;color:var(--gray-700);font-weight:600}
+
+    /* Category nav */
+    .catnav{background:#f8fafc;border-top:1px solid var(--gray-200);border-bottom:1px solid var(--gray-200)}
+    .catnav .rail{display:flex;gap:18px;overflow:auto;padding:10px 0}
+    .catnav a{white-space:nowrap;color:var(--gray-700);padding:8px 12px;border-radius:8px}
+    .catnav a:hover{background:#e8eef8}
+
+    /* Hero */
+    .hero{background:linear-gradient(135deg,#eaf2ff,#f8fbff);margin:18px 0;border-radius:var(--radius-xl);overflow:hidden;display:grid;grid-template-columns:1.1fr .9fr}
+    .hero .copy{padding:36px}
+    .hero h1{font-size:2rem;margin:0 0 10px}
+    .hero p{color:var(--gray-600);margin:0 0 18px}
+    .hero .cta{display:flex;gap:12px}
+    .btn{display:inline-flex;align-items:center;gap:8px;padding:12px 16px;border-radius:12px;border:1px solid var(--gray-300);background:#fff;font-weight:700;cursor:pointer}
+    .btn.primary{background:var(--blue-800);color:#fff;border-color:var(--blue-800)}
+    .btn.ghost{background:transparent}
+    .hero .art{min-height:260px;position:relative}
+    .hero .art svg{width:100%;height:100%}
+
+    /* Promos */
+    .promos{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin:18px 0}
+    .promo{background:#fff;border:1px solid var(--gray-200);border-radius:var(--radius-lg);padding:16px;display:grid;grid-template-columns:120px 1fr;gap:14px;align-items:center}
+    .promo .thumb{width:100%;height:90px;border-radius:10px;background:#e2e8f0;display:grid;place-items:center}
+    .promo h3{margin:0 0 6px;font-size:1.05rem}
+    .promo p{margin:0;color:var(--gray-600);font-size:.95rem}
+
+    /* Product grid */
+    .section-head{display:flex;align-items:flex-end;justify-content:space-between;margin:26px 0 10px}
+    .section-head h2{margin:0;font-size:1.3rem}
+    .grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
+    .card{border:1px solid var(--gray-200);border-radius:var(--radius-lg);overflow:hidden;background:#fff;display:flex;flex-direction:column}
+    .card .img{aspect-ratio:4/3;background:#f1f5f9;display:grid;place-items:center}
+    .card .body{padding:12px;display:grid;gap:8px}
+    .price{font-weight:800}
+    .badge{display:inline-block;background:#eef2ff;color:var(--blue-900);padding:4px 8px;border-radius:9999px;font-size:.8rem}
+    .rating{font-size:.9rem;color:var(--gray-600)}
+    .add{margin-top:auto;padding:12px;border:0;background:var(--blue-800);color:#fff;cursor:pointer}
+
+    /* Category tiles */
+    .tiles{display:grid;grid-template-columns:repeat(6,1fr);gap:12px}
+    .tile{border:1px solid var(--gray-200);border-radius:12px;background:#fff;overflow:hidden}
+    .tile .img{height:110px;background:#eef2ff;display:grid;place-items:center}
+    .tile .cap{padding:10px;font-weight:700;text-align:center}
+
+    /* Footer */
+    footer{margin-top:36px;background:#0b1f3e;color:#dbeafe}
+    footer .grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;padding:26px 0}
+    footer h4{margin:0 0 8px}
+    footer ul{list-style:none;margin:0;padding:0;display:grid;gap:8px}
+    footer a{color:#cfe0ff}
+    .legal{border-top:1px solid rgba(255,255,255,.15);padding:12px 0;color:#bcd3ff;font-size:.9rem}
+
+    /* Responsive */
+    @media (max-width: 1000px){
+      .header .row{grid-template-columns:1fr;gap:10px}
+      .promos{grid-template-columns:1fr 1fr}
+      .grid{grid-template-columns:repeat(2,1fr)}
+      .tiles{grid-template-columns:repeat(3,1fr)}
+      .hero{grid-template-columns:1fr}
     }
-    header img {
-      vertical-align: middle;
-      height: 40px;
-      margin-right: 12px;
-    }
-    nav {
-      background: #02386e;
-      color: #fff;
-      padding: 13px 0;
-      text-align: center;
-    }
-    nav a {
-      color: #fff;
-      text-decoration: none;
-      margin: 0 22px;
-      font-size: 16px;
-      font-weight: 500;
-    }
-    .banner {
-      background: #d9e7f4;
-      padding: 28px 0;
-      text-align: center;
-      font-size: 1.4em;
-      color: #005cde;
-      font-weight: 700;
-      margin-bottom: 30px;
-      box-shadow: 0 2px 10px rgba(0,0,0,0.04);
-    }
-    .main {
-      display: flex;
-      justify-content: center;
-      align-items: flex-start;
-      gap: 32px;
-      margin: 0 5vw;
-      padding-bottom: 52px;
-    }
-    .featured {
-      background: #fff;
-      border-radius: 7px;
-      box-shadow: 0 2px 16px #e3e3e3;
-      padding: 24px 26px;
-      min-width: 340px;
-      max-width: 400px;
-      margin-bottom: 32px;
-    }
-    .featured h2 {
-      color: #005cde;
-      margin-bottom: 16px;
-      font-size: 1.2em;
-      font-weight: 700;
-    }
-    .featured p {
-      line-height: 1.6;
-      font-size: 15px;
-      margin-bottom: 16px;
-    }
-    .featured img {
-      width: 100%;
-      border-radius: 6px;
-      margin-bottom: 13px;
-    }
-    footer {
-      background: #e6e9ef;
-      color: #8899aa;
-      text-align: center;
-      padding: 18px 0;
-      font-size: 14px;
-    }
-    /* Chatbot button area: center right */
-    #divicw {
-      position: fixed;
-      right: 48px;
-      bottom: 12px;
-      z-index: 10000;
+    @media (max-width: 600px){
+      .promos{grid-template-columns:1fr}
+      .grid{grid-template-columns:1fr}
+      .tiles{grid-template-columns:repeat(2,1fr)}
     }
   </style>
 </head>
 <body>
-  <header>
-    <!-- Lowe's logo simulated (GitHub pages do not allow direct copying Lowe's logo) -->
-    <img src="https://upload.wikimedia.org/wikipedia/commons/4/4e/Lowes_logo_2022.png" alt="Lowe's Logo">
-    <span style="font-size: 1.5em; font-weight:700;">Lowe's</span>
-  </header>
-  <nav>
-    <a href="#">Shop</a>
-    <a href="#">Departments</a>
-    <a href="#">DIY</a>
-    <a href="#">Trends</a>
-    <a href="#">Deals</a>
-    <a href="#">Services</a>
-  </nav>
-  <div class="banner">
-    Celebrate Fall Savings: Exclusive Deals on Home and Garden
-  </div>
-  <div class="main">
-    <div class="featured">
-      <img src="https://images.lowes.com/product/converted/885911/885911850529.jpg" alt="Featured Product">
-      <h2>DeWalt Drill Driver Kit</h2>
-      <p>Power through your fall DIY projects with our bestselling DeWalt Drill Driver Kit. Save big during our Labor Day Sale!</p>
-      <p><strong>Now just $79 (regular $99)</strong></p>
-      <button style="background:#005cde;color:#fff;border:none;padding:10px 22px;border-radius:4px;cursor:pointer;font-weight:600;">Shop Now</button>
-    </div>
-    <div class="featured">
-      <img src="https://images.lowes.com/product/converted/889144/889144399086.jpg" alt="Featured Product">
-      <h2>Char-Broil 4 Burner Gas Grill</h2>
-      <p>Make the most of your outdoor cooking with our Labor Day Sale specials on grills, smokers and accessories.</p>
-      <p><strong>Just $199 (was $249)</strong></p>
-      <button style="background:#005cde;color:#fff;border:none;padding:10px 22px;border-radius:4px;cursor:pointer;font-weight:600;">Shop Now</button>
+  <a href="#main" class="sr-only">Skip to content</a>
+
+  <!-- Simple top announcement bar -->
+  <div class="topbar">
+    <div class="container">
+      <div class="left">
+        <span class="pill">Demo</span>
+        <strong>Home Improvement Demo Store</strong>
+      </div>
+      <div class="right">
+        <span>Free shipping over $45</span>
+        <span>Store pickup available</span>
+      </div>
     </div>
   </div>
 
-  <!-- Chatbot button area -->
-  <div id="divicw" data-bind="5FC192F8-E565-4F20-8E92-DB53AE8C5833" data-org=""></div>
-  <script>
-  var i={t:function(t){var e="https://media.imi.chat/widget/js/imichatinit.js";
-  try{var o=new XMLHttpRequest;
-  o.onreadystatechange=function(){if(this.readyState==4){
-    var t=document.getElementById("divicw");
-    if(this.status==0){i.o(t);return}
-    var e=document.createElement("script");
-    e.innerHTML=this.responseText;
-    t.parentNode.insertBefore(e,t.nextSibling)}};
-  o.open("GET",e,true);o.send()}catch(s){console.error(s)}},
-  o:function(t){t.insertAdjacentHTML("afterend",'<iframe id="tls_al_frm" frameborder="0" style="overflow: hidden;height: 208px;width: 394px;position: fixed;display: block;right: 48px;bottom: 12px;z-index: 99999; display:none;"></iframe>');
-  var e=document.getElementById("tls_al_frm");
-  var o=e.contentWindow||(e.contentDocument.document||e.contentDocument);
-  o.document.open();
-  o.document.write('<!doctype html><html><head><meta charset="utf-8"><title>Untitled Document</title><style>body{font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;color: #99a0b0;font-size: 14px;}.popover__content{background-color: #fbfbfe; padding: 1.5rem; border-radius: 5px; width: 300px; box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.26);position: relative;}.popover__message{font-weight: 600;color:#56627c;font-size: 16px;}.pull-left{float:left;}.clearfix{clear: both;}.hdr-txt{width: 218px; margin-top: 3px;}.para-txt a{text-decoration: none;color: #005cde;}.close-btn{position: absolute;right:15px;top:15px;}.close-btn a{text-decoration: none;font-weight: 400; color: #56627c; font-size: 16px;}</style></head><body><div class="popover__content"><div class="close-btn"><a href="#" onclick="closeTLSAlert();">X</a></div><div class="popover__message"><div class="pull-left hdr-txt">This browser version is not supported on LiveChat.</div></div><div class="clearfix"></div><p class="para-txt">Please update your browser to the latest version and re-open the website to access the widget. </p></div><script>function closeTLSAlert(){window.parent.postMessage({key: "close_tls_alert",value: "close_tls_alert",action: "close_tls_alert"}, "*");}<\/script></body></html>');
-  o.document.close();e.style.display="block";
-  window.addEventListener("message",function(t){if(t.data.action=="close_tls_alert"){i.s()}})},
-  s:function(){var t=document.getElementById("tls_al_frm");t.remove()}};
-  i.t(function(t){});
-  </script>
+  <!-- Header with brand, search, quick links -->
+  <header class="header">
+    <div class="container">
+      <div class="row">
+        <a class="brand" href="#" aria-label="Demo Store Home">
+          <div class="mark" aria-hidden="true">HI</div>
+          <div class="name">Home Improvement Demo</div>
+        </a>
+        <form class="search" role="search" aria-label="Site search" onsubmit="return false">
+          <label class="sr-only" for="q">Search</label>
+          <input id="q" name="q" placeholder="Search products, brands, or categories" />
+          <button type="submit" aria-label="Search">Search</button>
+        </form>
+        <nav class="quick" aria-label="Account and tools">
+          <a href="#">Sign In</a>
+          <a href="#">My Store</a>
+          <a href="#">Cart (0)</a>
+        </nav>
+      </div>
+    </div>
+    <div class="catnav" role="navigation" aria-label="Categories">
+      <div class="container">
+        <div class="rail">
+          <a href="#">Appliances</a>
+          <a href="#">Tools</a>
+          <a href="#">Outdoor</a>
+          <a href="#">Flooring</a>
+          <a href="#">Bath</a>
+          <a href="#">Kitchen</a>
+          <a href="#">Lighting</a>
+          <a href="#">Smart Home</a>
+          <a href="#">Paint</a>
+          <a href="#">Storage</a>
+          <a href="#">Deals</a>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main id="main" class="container" tabindex="-1">
+    <!-- Hero -->
+    <section class="hero" aria-label="Seasonal savings">
+      <div class="copy">
+        <h1>Fall Project Savings Event</h1>
+        <p>Refresh your space with new tools, lighting, and flooring. Curbside pickup and delivery available.</p>
+        <div class="cta">
+          <button class="btn primary">Shop Deals</button>
+          <button class="btn ghost">Browse Categories</button>
+        </div>
+      </div>
+      <div class="art" aria-hidden="true">
+        <svg viewBox="0 0 600 360" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Decorative hero art">
+          <defs>
+            <linearGradient id="g1" x1="0" x2="1" y1="0" y2="1">
+              <stop offset="0" stop-color="#cfe0ff" />
+              <stop offset="1" stop-color="#eaf2ff" />
+            </linearGradient>
+          </defs>
+          <rect x="0" y="0" width="600" height="360" fill="url(#g1)" />
+          <g opacity="0.8">
+            <rect x="80" y="50" rx="12" ry="12" width="160" height="110" fill="#99b7ff" />
+            <rect x="260" y="70" rx="12" ry="12" width="220" height="140" fill="#aac8ff" />
+            <rect x="120" y="190" rx="12" ry="12" width="210" height="130" fill="#c1d6ff" />
+            <rect x="360" y="230" rx="12" ry="12" width="160" height="80" fill="#d4e3ff" />
+          </g>
+        </svg>
+      </div>
+    </section>
+
+    <!-- Promos -->
+    <section aria-label="Featured promotions" class="promos">
+      <article class="promo">
+        <div class="thumb" aria-hidden="true">🔧</div>
+        <div>
+          <h3>Power Tools Event</h3>
+          <p>Bundle and save on drills, drivers, and saws.</p>
+        </div>
+      </article>
+      <article class="promo">
+        <div class="thumb" aria-hidden="true">🧰</div>
+        <div>
+          <h3>Storage & Organization</h3>
+          <p>Garage systems and bins to clear the clutter.</p>
+        </div>
+      </article>
+      <article class="promo">
+        <div class="thumb" aria-hidden="true">💡</div>
+        <div>
+          <h3>Bright Ideas</h3>
+          <p>LED fixtures for every room in your home.</p>
+        </div>
+      </article>
+    </section>
+
+    <!-- Product grid -->
+    <div class="section-head">
+      <h2>Trending Now</h2>
+      <a href="#">See all</a>
+    </div>
+    <section class="grid" aria-label="Trending products">
+      <!-- Card 1 -->
+      <article class="card">
+        <div class="img" aria-hidden="true">
+          <svg viewBox="0 0 400 300" width="100%" height="100%"><rect width="400" height="300" fill="#e5e7eb" /><text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" fill="#94a3b8" font-family="sans-serif" font-size="18">Product Image</text></svg>
+        </div>
+        <div class="body">
+          <span class="badge">Online only</span>
+          <div>18V Cordless Drill Driver Kit</div>
+          <div class="rating">★★★★★ <span aria-hidden="true">·</span> 248 reviews</div>
+          <div class="price">$99.00</div>
+        </div>
+        <button class="add" aria-label="Add 18V Cordless Drill Driver Kit to cart">Add to Cart</button>
+      </article>
+      <!-- Card 2 -->
+      <article class="card">
+        <div class="img" aria-hidden="true">
+          <svg viewBox="0 0 400 300" width="100%" height="100%"><rect width="400" height="300" fill="#e5e7eb" /><text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" fill="#94a3b8" font-family="sans-serif" font-size="18">Product Image</text></svg>
+        </div>
+        <div class="body">
+          <span class="badge">New</span>
+          <div>Smart Wi‑Fi Thermostat</div>
+          <div class="rating">★★★★☆ <span aria-hidden="true">·</span> 1,102 reviews</div>
+          <div class="price">$169.00</div>
+        </div>
+        <button class="add" aria-label="Add Smart Wi‑Fi Thermostat to cart">Add to Cart</button>
+      </article>
+      <!-- Card 3 -->
+      <article class="card">
+        <div class="img" aria-hidden="true">
+          <svg viewBox="0 0 400 300" width="100%" height="100%"><rect width="400" height="300" fill="#e5e7eb" /><text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" fill="#94a3b8" font-family="sans-serif" font-size="18">Product Image</text></svg>
+        </div>
+        <div class="body">
+          <span class="badge">Top rated</span>
+          <div>Outdoor String Lights 48 ft</div>
+          <div class="rating">★★★★★ <span aria-hidden="true">·</span> 4,503 reviews</div>
+          <div class="price">$39.98</div>
+        </div>
+        <button class="add" aria-label="Add Outdoor String Lights to cart">Add to Cart</button>
+      </article>
+      <!-- Card 4 -->
+      <article class="card">
+        <div class="img" aria-hidden="true">
+          <svg viewBox="0 0 400 300" width="100%" height="100%"><rect width="400" height="300" fill="#e5e7eb" /><text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" fill="#94a3b8" font-family="sans-serif" font-size="18">Product Image</text></svg>
+        </div>
+        <div class="body">
+          <span class="badge">Rollback</span>
+          <div>Luxury Vinyl Plank Flooring, 20 sqft</div>
+          <div class="rating">★★★★☆ <span aria-hidden="true">·</span> 327 reviews</div>
+          <div class="price">$54.80</div>
+        </div>
+        <button class="add" aria-label="Add Luxury Vinyl Plank Flooring to cart">Add to Cart</button>
+      </article>
+    </section>
+
+    <!-- Category tiles -->
+    <div class="section-head"><h2>Shop Top Categories</h2></div>
+    <section class="tiles" aria-label="Top categories">
+      <a class="tile" href="#"><div class="img">🛠️</div><div class="cap">Tools</div></a>
+      <a class="tile" href="#"><div class="img">❄️</div><div class="cap">Appliances</div></a>
+      <a class="tile" href="#"><div class="img">🌳</div><div class="cap">Outdoor</div></a>
+      <a class="tile" href="#"><div class="img">🧽</div><div class="cap">Cleaning</div></a>
+      <a class="tile" href="#"><div class="img">🪚</div><div class="cap">Lumber</div></a>
+      <a class="tile" href="#"><div class="img">🔌</div><div class="cap">Electrical</div></a>
+    </section>
+
+    <!-- Chatbot mount point -->
+    <section id="chatbot" style="margin:40px 0">
+      <h2>Chatbot Demo</h2>
+      <p>This static page includes your chat widget snippet below. If your environment requires an org identifier, set it on <code>data-org</code>.</p>
+
+      <!-- BEGIN: Your provided chat widget snippet (unchanged) -->
+      <div id="divicw" data-bind="5FC192F8-E565-4F20-8E92-DB53AE8C5833" data-org=""></div>
+      <script>
+      var i={t:function(t){var e="https://media.imi.chat/widget/js/imichatinit.js";try{var o=new XMLHttpRequest;o.onreadystatechange=function(){if(this.readyState==4){var t=document.getElementById("divicw");if(this.status==0){i.o(t);return}var e=document.createElement("script");e.innerHTML=this.responseText;t.parentNode.insertBefore(e,t.nextSibling)}};o.open("GET",e,true);o.send()}catch(s){console.error(s)}},o:function(t){t.insertAdjacentHTML("afterend",'<iframe id="tls_al_frm" frameborder="0" style="overflow: hidden;height: 208px;width: 394px;position: fixed;display: block;right: 48px;bottom: 12px;z-index: 99999; display:none;"></iframe>');var e=document.getElementById("tls_al_frm");var o=e.contentWindow||(e.contentDocument.document||e.contentDocument);o.document.open();o.document.write('<!doctype html><html><head><meta charset="utf-8"><title>Untitled Document</title><style>body{font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;color: #99a0b0;font-size: 14px;}.popover__content{background-color: #fbfbfe; padding: 1.5rem; border-radius: 5px; width: 300px; box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.26);position: relative;}.popover__message{font-weight: 600;color:#56627c;font-size: 16px;}.pull-left{float:left;}.clearfix{clear: both;}.hdr-txt{width: 218px; margin-top: 3px;}.para-txt a{text-decoration: none;color: #005cde;}.close-btn{position: absolute;right:15px;top:15px;}.close-btn a{text-decoration: none;font-weight: 400; color: #56627c; font-size: 16px;}</style></head><body><div class="popover__content"><div class="close-btn"><a href="#" onclick="closeTLSAlert();">X</a></div><div class="popover__message"><div class="pull-left hdr-txt">This browser version is not supported on LiveChat.</div></div><div class="clearfix"></div><p class="para-txt">Please update your browser to the latest version and re-open the website to access the widget. </p></div><script>function closeTLSAlert(){window.parent.postMessage({key: "close_tls_alert",value: "close_tls_alert",action: "close_tls_alert"}, "*");}<\/script></body></html>');o.document.close();e.style.display="block";window.addEventListener("message",function(t){if(t.data.action=="close_tls_alert"){i.s()}})},s:function(){var t=document.getElementById("tls_al_frm");t.remove()}};i.t(function(t){});
+      </script>
+      <!-- END: Chat widget snippet -->
+    </section>
+  </main>
 
   <footer>
-    &copy; 2025 Lowe's Demo
+    <div class="container">
+      <div class="grid">
+        <div>
+          <h4>Customer Service</h4>
+          <ul>
+            <li><a href="#">Help Center</a></li>
+            <li><a href="#">Order Status</a></li>
+            <li><a href="#">Returns</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4>Services</h4>
+          <ul>
+            <li><a href="#">Installations</a></li>
+            <li><a href="#">Credit</a></li>
+            <li><a href="#">Gift Cards</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4>Resources</h4>
+          <ul>
+            <li><a href="#">Project Guides</a></li>
+            <li><a href="#">Calculator Tools</a></li>
+            <li><a href="#">Safety</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4>About</h4>
+          <ul>
+            <li><a href="#">Company</a></li>
+            <li><a href="#">Careers</a></li>
+            <li><a href="#">Sustainability</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="legal container">
+        <p><strong>Demo only.</strong> This page is a generic, non functional mock storefront for chatbot demonstrations. It is not affiliated with or endorsed by any retailer.</p>
+      </div>
+    </div>
   </footer>
 </body>
 </html>
